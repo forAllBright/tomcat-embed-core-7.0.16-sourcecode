@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +38,9 @@ package org.apache.catalina;
  * @author Peter Donald
  * @version $Id: Pipeline.java 939305 2010-04-29 13:43:39Z kkolinko $
  */
-
+// 接口,  管道描述了一系列的阀门,有次序的被调用 invoke()方法来对请求进行处理,且要求至少最后一个
+// 阀门能对请求给出正确的响应.通常,每个容器对应一个管道. 通常容器的常规的请求处理功能被封装成阀门放置在
+// 管道的最后,用 setBasic()方法来保证这点.其他的阀门将按照加入管道的顺序来一次调用执行.
 public interface Pipeline {
 
 
@@ -83,7 +85,7 @@ public interface Pipeline {
      * <p>Implementation note: Implementations are expected to trigger the
      * {@link Container#ADD_VALVE_EVENT} for the associated container if this
      * call is successful.</p>
-     * 
+     *
      * @param valve Valve to be added
      *
      * @exception IllegalArgumentException if this Container refused to
@@ -124,7 +126,7 @@ public interface Pipeline {
      * Valve for this Pipeline (if any).
      */
     public Valve getFirst();
-    
+
     /**
      * Returns true if all the valves in this pipeline support async, false otherwise
      * @return true if all the valves in this pipeline support async, false otherwise
