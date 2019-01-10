@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,14 +47,16 @@ import javax.servlet.UnavailableException;
  * @author Craig R. McClanahan
  * @version $Id: Wrapper.java 1130618 2011-06-02 15:54:26Z markt $
  */
-
+// 接口. 从web 应用程序部署描述中产生的一个容器,提供了拦截器的实现,来得到所有访问其中servlet
+// 的连接请求,负责管理 servlet 的生命周期. 继承于 Container 接口. 总的来说,还需要一个类来实现
+// 这个接口提供更具体的管理 servlet 声明周期 等方法.
 public interface Wrapper extends Container {
 
     /**
      * Container event for adding a wrapper.
      */
     public static final String ADD_MAPPING_EVENT = "addMapping";
-    
+
     /**
      * Container event for removing a wrapper.
      */
@@ -146,12 +148,12 @@ public interface Wrapper extends Container {
      */
     public boolean isUnavailable();
 
-    
+
     /**
      * Return the associated servlet instance.
      */
     public Servlet getServlet();
-    
+
 
     /**
      * Set the associated servlet instance
@@ -180,7 +182,7 @@ public interface Wrapper extends Container {
 
     /**
      * Add a mapping associated with the Wrapper.
-     * 
+     *
      * @param mapping The new wrapper mapping
      */
     public void addMapping(String mapping);
@@ -209,6 +211,7 @@ public interface Wrapper extends Container {
      *  an exception
      * @exception ServletException if a loading error occurs
      */
+    // 为以初始化的 servlet 分配即将进入 service()
     public Servlet allocate() throws ServletException;
 
 
@@ -221,6 +224,7 @@ public interface Wrapper extends Container {
      *
      * @exception ServletException if a deallocation error occurs
      */
+    // 对于服务器单线程模式,将分配即将 service 的 servlet 放入实例池等待线程选择运行.
     public void deallocate(Servlet servlet) throws ServletException;
 
 
@@ -320,6 +324,7 @@ public interface Wrapper extends Container {
      * @param unavailable The exception that occurred, or <code>null</code>
      *  to mark this servlet as permanently unavailable
      */
+    // 设定该 servlet 在一定时间内不可用
     public void unavailable(UnavailableException unavailable);
 
 
@@ -341,31 +346,31 @@ public interface Wrapper extends Container {
      * returned.
      */
     public MultipartConfigElement getMultipartConfigElement();
-    
-    
+
+
     /**
      * Set the multi-part configuration for the associated servlet. To clear the
      * multi-part configuration specify <code>null</code> as the new value.
      */
     public void setMultipartConfigElement(
             MultipartConfigElement multipartConfig);
-    
+
     /**
      * Does the associated Servlet support async processing? Defaults to
      * <code>true</code>
      */
     public boolean isAsyncSupported();
-    
+
     /**
      * Set the async support for the associated servlet.
      */
     public void setAsyncSupported(boolean asyncSupport);
-    
+
     /**
      * Is the associated Servlet enabled? Defaults to <code>true</code>.
      */
     public boolean isEnabled();
-    
+
     /**
      * Sets the enabled attribute for the associated servlet.
      */
@@ -375,18 +380,18 @@ public interface Wrapper extends Container {
      * Set the flag that indicates
      * {@link javax.servlet.annotation.ServletSecurity} annotations must be
      * scanned when the Servlet is first used.
-     * 
+     *
      * @param b The new value of the flag
      */
     public void setServletSecurityAnnotationScanRequired(boolean b);
-    
+
     /**
      * Scan for (if necessary) and process (if found) the
      * {@link javax.servlet.annotation.ServletSecurity} annotations for the
      * Servlet associated with this wrapper.
      */
     public void servletSecurityAnnotationScan() throws ServletException;
-    
+
     /**
      * Is the Servlet overridable by a ServletContainerInitializer?
      */
