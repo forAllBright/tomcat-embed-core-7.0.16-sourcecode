@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,6 +43,8 @@ import org.apache.catalina.connector.Response;
  * @author Peter Donald
  * @version $Id: Valve.java 987920 2010-08-22 15:34:34Z markt $
  */
+// 接口, Valve(阀门)是在一个具体的容器中的 请求处理过程的组件. 一系列的相互关联的阀门进入Pipeline(管道) 中.
+//定义了 invoke()方法,来对请求进行有步骤的处理.
 
 public interface Valve {
 
@@ -59,6 +61,7 @@ public interface Valve {
     /**
      * Return the next Valve in the pipeline containing this Valve, if any.
      */
+    // 获取管道中的额下一个阀门.
     public Valve getNext();
 
 
@@ -67,6 +70,7 @@ public interface Valve {
      *
      * @param valve The new next valve, or <code>null</code> if none
      */
+    // 设定管道的下一个阀门.
     public void setNext(Valve valve);
 
 
@@ -78,6 +82,7 @@ public interface Valve {
      * invoked inside the classloading context of this container. Unexpected
      * throwables will be caught and logged.
      */
+    // 负责执行周期性的任务,如重新加载,
     public void backgroundProcess();
 
 
@@ -128,10 +133,11 @@ public interface Valve {
      * @exception ServletException if a servlet error occurs, or is thrown
      *  by a subsequently invoked Valve, Filter, or Servlet
      */
+    // 通过阀门的 invoke()来完成对请求的处理.如果当前 Valve 没有正确处理请求,则调用管道的下一个Valve进行处理.
     public void invoke(Request request, Response response)
         throws IOException, ServletException;
 
-    
+
     /**
      * Process a Comet event.
      *
@@ -146,8 +152,8 @@ public interface Valve {
     public void event(Request request, Response response, CometEvent event)
         throws IOException, ServletException;
 
-    
+
     public boolean isAsyncSupported();
-    
+
 
 }
